@@ -47,9 +47,7 @@ export default function App() {
         isEmpty={isEmpty}
       />
       <Button onClick={handleClick} disabled={isLoading}>
-        {isEmpty ? "Load picture." : null}
-        {isLoaded ? "One more?" : null}
-        {isError ? "Try again." : null}
+        {isLoaded ? "One more?" : "Load picture."}
       </Button>
     </Container>
   );
