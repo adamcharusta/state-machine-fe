@@ -36,11 +36,15 @@ export default function App() {
 
   return (
     <Container>
+      {compareState(states.isEmpty) && (
+        <span className="font-bold">
+          What are you waiting for? Upload a photo.
+        </span>
+      )}
       <ImgBox
         src={imgSrc}
         isLoading={compareState(states.isLoading)}
         isError={compareState(states.isError)}
-        isEmpty={compareState(states.isEmpty)}
       />
       <Button onClick={handleClick} disabled={compareState(states.isLoading)}>
         {compareState(states.isLoaded) ? "One more?" : "Load picture."}
