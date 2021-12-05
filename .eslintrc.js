@@ -31,5 +31,6 @@ module.exports = {
     ],
     "import/order": "off",
     "import/no-extraneous-dependencies": "off",
+    "no-shadow": "off",
   },
 };

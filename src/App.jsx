@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { commands, states, transition } from "./helpers/stateMachine";
 
 import Button from "./components/Button";
 import Container from "./components/Container";
@@ -8,33 +9,28 @@ import axios from "axios";
 import random from "lodash/random";
 
 export default function App() {
+  const [currentState, setCurrentState] = useState(states.isEmpty);
   const [imgSrc, setImgSrc] = useState(null);
-  const [isEmpty, setIsEmpty] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isError, setIsError] = useState(false);
+
+  function updateState(action) {
+    setCurrentState((currentState) => transition(currentState, action));
+  }
+
+  const compareState = (state) => currentState === state;
 
   const handleClick = () => {
-    setIsError(false);
+    updateState(commands.FETCH_IMG);
     setImgSrc(null);
-    setIsLoading(true);
-    setIsLoaded(false);
-    setIsEmpty(true);
 
     const randomId = random(0, 1000);
 
     axios(apiUrl(randomId))
       .then((res) => {
-        setIsLoading(false);
-        setIsLoaded(true);
-        setIsEmpty(false);
         setImgSrc(res.config.url);
+        updateState(commands.FETCH_IMG_SUCCESS);
       })
       .catch(() => {
-        setIsLoading(false);
-        setIsLoaded(false);
-        setIsError(true);
-        setIsEmpty(false);
+        updateState(commands.FETCH_IMG_ERROR);
       });
   };
 
@@ -42,14 +38,12 @@ export default function App() {
     <Container>
       <ImgBox
         src={imgSrc}
-        isLoading={isLoading}
-        isError={isError}
-        isEmpty={isEmpty}
+        isLoading={compareState(states.isLoading)}
+        isError={compareState(states.isError)}
+        isEmpty={compareState(states.isEmpty)}
       />
-      <Button onClick={handleClick} disabled={isLoading}>
-        {isEmpty ? "Load picture." : null}
-        {isLoaded ? "One more?" : null}
-        {isError ? "Try again." : null}
+      <Button onClick={handleClick} disabled={compareState(states.isLoading)}>
+        {compareState(states.isLoaded) ? "One more?" : "Load picture."}
       </Button>
     </Container>
   );
