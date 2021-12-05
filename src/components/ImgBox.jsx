@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-export default function ImgBox({ src, isLoading, isError, isEmpty }) {
+export default function ImgBox({ src, isLoading, isError }) {
   const animation = isLoading ? "animate-pulse" : "";
   const content = isError ? (
     <span className="font-bold">
@@ -16,11 +16,6 @@ export default function ImgBox({ src, isLoading, isError, isEmpty }) {
     <div
       className={`w-96 h-96 flex justify-center items-center flex-col ${animation} ${background}`}
     >
-      {isEmpty && (
-        <span className="font-bold">
-          What are you waiting for? Upload a photo.
-        </span>
-      )}
       {content}
     </div>
   );
@@ -30,12 +25,10 @@ ImgBox.propTypes = {
   src: PropTypes.string,
   isLoading: PropTypes.bool,
   isError: PropTypes.bool,
-  isEmpty: PropTypes.bool,
 };
 
 ImgBox.defaultProps = {
   src: null,
   isLoading: false,
   isError: false,
-  isEmpty: true,
 };

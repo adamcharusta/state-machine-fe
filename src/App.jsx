@@ -19,7 +19,7 @@ export default function App() {
     setImgSrc(null);
     setIsLoading(true);
     setIsLoaded(false);
-    setIsEmpty(true);
+    setIsEmpty(false);
 
     const randomId = random(0, 1000);
 
@@ -27,25 +27,23 @@ export default function App() {
       .then((res) => {
         setIsLoading(false);
         setIsLoaded(true);
-        setIsEmpty(false);
         setImgSrc(res.config.url);
       })
       .catch(() => {
         setIsLoading(false);
         setIsLoaded(false);
         setIsError(true);
-        setIsEmpty(false);
       });
   };
 
   return (
     <Container>
-      <ImgBox
-        src={imgSrc}
-        isLoading={isLoading}
-        isError={isError}
-        isEmpty={isEmpty}
-      />
+      {isEmpty && (
+        <span className="font-bold">
+          What are you waiting for? Upload a photo.
+        </span>
+      )}
+      <ImgBox src={imgSrc} isLoading={isLoading} isError={isError} />
       <Button onClick={handleClick} disabled={isLoading}>
         {isLoaded ? "One more?" : "Load picture."}
       </Button>
