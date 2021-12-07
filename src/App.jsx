@@ -1,7 +1,6 @@
-// @ts-nocheck
 import React, { useState } from "react";
-
 import { assign, createMachine } from "xstate";
+
 import Button from "./components/Button";
 import Container from "./components/Container";
 import ImgBox from "./components/ImgBox";
